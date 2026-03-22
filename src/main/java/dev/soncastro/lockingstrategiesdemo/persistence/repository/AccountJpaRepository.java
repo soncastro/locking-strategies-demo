@@ -15,11 +15,11 @@ public interface AccountJpaRepository extends JpaRepository<AccountEntity, Long>
     @Modifying
     @Query(value ="""
         UPDATE account a
-        SET balance = 0
+        SET balance = :balance
         WHERE 
         a.id = :accountId
     """, nativeQuery = true)
-    int resetBalance(@Param("accountId") Long accountId);  
+    int resetBalance(@Param("accountId") Long accountId, @Param("balance") BigDecimal balance);  
 
     @Query(value = """
         SELECT a.balance FROM account a

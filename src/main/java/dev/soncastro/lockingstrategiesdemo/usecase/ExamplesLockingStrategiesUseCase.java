@@ -1,7 +1,6 @@
 package dev.soncastro.lockingstrategiesdemo.usecase;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import dev.soncastro.lockingstrategiesdemo.persistence.entity.AccountMovementEntity;
 import dev.soncastro.lockingstrategiesdemo.persistence.repository.AccountJpaRepository;
 import dev.soncastro.lockingstrategiesdemo.persistence.repository.AccountMovementJpaRepository;
 import dev.soncastro.lockingstrategiesdemo.persistence.repository.AfericaoJpaRepository;
@@ -34,36 +32,14 @@ public class ExamplesLockingStrategiesUseCase {
     private AfericaoJpaRepository afericaoJpaRepository;
 
     @Transactional
-    public void reset(long accountId) {
+    public void reset() {
+        final long accountId = 1L;
         log.debug("Iniciando reset para accountId={}", accountId);
         this.afericaoJpaRepository.deleteAll();
         this.afericaoJpaRepository.insertAfericao(1L, 2);
         this.accountMovementJpaRepository.deleteByAccountId(accountId);
-        this.accountJpaRepository.resetBalance(accountId);
+        this.accountJpaRepository.resetBalance(1L, new BigDecimal("100"));
         log.debug("Reset concluido para accountId={}", accountId);
-    }
-
-    @Transactional
-    public int resetAndUpdateBalance(long accountId, BigDecimal balance) {
-        log.debug("Iniciando updateBalance para accountId={} balance={}", accountId, balance);
-        this.reset(accountId);
-        int updatedRows = this.accountJpaRepository.updateBalanceById(accountId, balance);
-        log.debug("updateBalance concluido para accountId={} updatedRows={}", accountId, updatedRows);
-        return updatedRows;
-    }
-
-    @Transactional(readOnly = true)
-    public BigDecimal getBalance(long accountId) {
-        log.debug("Consultando saldo para accountId={}", accountId);
-        BigDecimal balance = this.accountJpaRepository.findBalanceById(accountId).orElseThrow();
-        log.debug("Saldo consultado para accountId={} balance={}", accountId, balance);
-        return balance;
-    }
-
-    @Transactional(readOnly = true)
-    public List<AccountMovementEntity> getMovements(long accountId) {
-        log.debug("Consultando movimentos para accountId={}", accountId);
-        return this.accountMovementJpaRepository.findByAccountId(accountId);
     }
 
     @Transactional
@@ -112,7 +88,7 @@ public class ExamplesLockingStrategiesUseCase {
 
         try {
             log.debug("Aguardando 1 segundo para simular operação demorada");
-            Thread.sleep(5000);
+            Thread.sleep(1000);
             log.debug("Fim do sleep");
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -161,7 +137,7 @@ public class ExamplesLockingStrategiesUseCase {
     }
 
     @Transactional
-    public void pseudoCenarioAfericaoPneuComInconsistencia(long pneuId, int vidaAfericao) {
+    public void cenarioFicticioAfericaoPneuComInconsistencia(long pneuId, int vidaAfericao) {
 
         Integer ultimaVida = this.afericaoJpaRepository.findLastVidaByPneuId(pneuId);
 
@@ -184,7 +160,7 @@ public class ExamplesLockingStrategiesUseCase {
     }
 
     @Transactional
-    public void pseudoCenarioAfericaoPneuSemInconsistencia(Long pneuId, int vidaAfericao) {
+    public void cenarioFicticioAfericaoPneuSemInconsistencia(Long pneuId, int vidaAfericao) {
 
         // Faz o lock na tabela pneu para garantir que não haja inconsistência
         // Quando usei este lock usei com FOR UPDATE NOWAIT, ou seja, se existe já um lock falha

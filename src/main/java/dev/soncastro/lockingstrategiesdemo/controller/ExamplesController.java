@@ -26,29 +26,12 @@ public class ExamplesController {
         this.examplesLockingStrategiesUseCase = examplesLockingStrategiesUseCase;
     }
 
-    @PostMapping("/reset-and-update-balance/{accountId}/{newBalance}")
-    public int resetAndUpdateBalance(@PathVariable long accountId, @PathVariable BigDecimal newBalance) {
-        log.debug("Recebida requisicao resetAndUpdateBalance para accountId={} newBalance={}", accountId, newBalance);
-        int val = this.examplesLockingStrategiesUseCase.resetAndUpdateBalance(accountId, newBalance);
-        log.debug("Fim do escopo da requisicao resetAndUpdateBalance para accountId={} newBalance={}", accountId, newBalance);
-        return val;
-    }   
-
-    @GetMapping("/balance/{accountId}")
-    public BigDecimal getBalance(@PathVariable long accountId) {
-        log.debug("Recebida requisicao getBalance para accountId={}", accountId);
-        BigDecimal val = this.examplesLockingStrategiesUseCase.getBalance(accountId);
-        log.debug("Fim do escopo da requisicao getBalance para accountId={}", accountId);
-        return val;
-    }
-
-    @GetMapping("/movements/{accountId}")
-    public List<AccountMovementEntity> getMovements(@PathVariable long accountId) {
-        log.debug("Recebida requisicao getMovements para accountId={}", accountId);
-        List<AccountMovementEntity> val = this.examplesLockingStrategiesUseCase.getMovements(accountId);
-        log.debug("Fim do escopo da requisicao getMovements para accountId={}", accountId);
-        return val;
-    }
+    @PostMapping("/reset")
+    public void reset() {
+        log.debug("Recebida requisicao reset");
+        this.examplesLockingStrategiesUseCase.reset();
+        log.debug("Fim do escopo da requisicao reset");
+    }        
 
     @PostMapping("/debit/{accountId}/{amount}")
     public void debit(@PathVariable long accountId, @PathVariable BigDecimal amount) {
@@ -80,18 +63,18 @@ public class ExamplesController {
         log.debug("Fim do escopo da requisicao debitOptimisticLocking para accountId={} amount={}", accountId, amount);
     }
 
-    @PostMapping("/pseudo-cenario-afericao-pneu-com-inconsistencia/{pneuId}/{vidaAfericao}")
-    public void pseudoCenarioAfericaoPneuComInconsistencia(@PathVariable long pneuId, @PathVariable int vidaAfericao) {
-        log.debug("Recebida requisicao pseudoCenarioAfericaoPneuComInconsistencia para pneuId={} vidaAfericao={}", pneuId, vidaAfericao);
-        this.examplesLockingStrategiesUseCase.pseudoCenarioAfericaoPneuComInconsistencia(pneuId, vidaAfericao);
-        log.debug("Fim do escopo da requisicao pseudoCenarioAfericaoPneuComInconsistencia para pneuId={} vidaAfericao={}", pneuId, vidaAfericao);
+    @PostMapping("/cenario-ficticio-afericao-pneu-com-inconsistencia/{pneuId}/{vidaAfericao}")
+    public void cenarioFicticioAfericaoPneuComInconsistencia(@PathVariable long pneuId, @PathVariable int vidaAfericao) {
+        log.debug("Recebida requisicao cenarioFicticioAfericaoPneuComInconsistencia para pneuId={} vidaAfericao={}", pneuId, vidaAfericao);
+        this.examplesLockingStrategiesUseCase.cenarioFicticioAfericaoPneuComInconsistencia(pneuId, vidaAfericao);
+        log.debug("Fim do escopo da requisicao cenarioFicticioAfericaoPneuComInconsistencia para pneuId={} vidaAfericao={}", pneuId, vidaAfericao);
     }
 
-    @PostMapping("/pseudo-cenario-afericao-pneu-sem-inconsistencia/{pneuId}/{vidaAfericao}")
-    public void pseudoCenarioAfericaoPneuSemInconsistencia(@PathVariable long pneuId, @PathVariable int vidaAfericao) {
-        log.debug("Recebida requisicao pseudoCenarioAfericaoPneuSemInconsistencia para pneuId={} vidaAfericao={}", pneuId, vidaAfericao);
-        this.examplesLockingStrategiesUseCase.pseudoCenarioAfericaoPneuSemInconsistencia(pneuId, vidaAfericao);
-        log.debug("Fim do escopo da requisicao pseudoCenarioAfericaoPneuSemInconsistencia para pneuId={} vidaAfericao={}", pneuId, vidaAfericao);
+    @PostMapping("/cenario-ficticio-afericao-pneu-sem-inconsistencia/{pneuId}/{vidaAfericao}")
+    public void cenarioFicticioAfericaoPneuSemInconsistencia(@PathVariable long pneuId, @PathVariable int vidaAfericao) {
+        log.debug("Recebida requisicao cenarioFicticioAfericaoPneuSemInconsistencia para pneuId={} vidaAfericao={}", pneuId, vidaAfericao);
+        this.examplesLockingStrategiesUseCase.cenarioFicticioAfericaoPneuSemInconsistencia(pneuId, vidaAfericao);
+        log.debug("Fim do escopo da requisicao cenarioFicticioAfericaoPneuSemInconsistencia para pneuId={} vidaAfericao={}", pneuId, vidaAfericao);
     }    
 
 }

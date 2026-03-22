@@ -8,7 +8,7 @@ const VIDA_AFERICAO_2 = '2';
 
 export const options = {
   scenarios: {
-    two_concurrent_pseudo_cenario_afericao_com_inconsistencia: {
+    two_concurrent_pseudo_cenario_afericao_sem_inconsistencia: {
       executor: 'shared-iterations',
       vus: 1,
       iterations: 1,
@@ -46,16 +46,16 @@ function formatBody(body) {
 }
 
 export default function () {
-  const url1 = `${BASE_URL}/pseudo-cenario-afericao-pneu-com-inconsistencia/${PNEU_ID}/${VIDA_AFERICAO_1}`;
-  const url2 = `${BASE_URL}/pseudo-cenario-afericao-pneu-com-inconsistencia/${PNEU_ID}/${VIDA_AFERICAO_2}`;
+  const url1 = `${BASE_URL}/cenario-ficticio-afericao-pneu-sem-inconsistencia/${PNEU_ID}/${VIDA_AFERICAO_1}`;
+  const url2 = `${BASE_URL}/cenario-ficticio-afericao-pneu-sem-inconsistencia/${PNEU_ID}/${VIDA_AFERICAO_2}`;
 
   const responses = http.batch([
-    ['POST', url1, null, { tags: { request_name: 'pseudo_cenario_afericao_com_inconsistencia_1' } }],
-    ['POST', url2, null, { tags: { request_name: 'pseudo_cenario_afericao_com_inconsistencia_2' } }],
+    ['POST', url1, null, { tags: { request_name: 'cenario_ficticio_afericao_sem_inconsistencia_1' } }],
+    ['POST', url2, null, { tags: { request_name: 'cenario_ficticio_afericao_sem_inconsistencia_2' } }],
   ]);
 
   responses.forEach((response, index) => {
-    const requestName = `pseudo_cenario_afericao_com_inconsistencia_${index + 1}`;
+    const requestName = `cenario_ficticio_afericao_sem_inconsistencia_${index + 1}`;
     console.log(
       [
         `\n[${requestName}]`,
