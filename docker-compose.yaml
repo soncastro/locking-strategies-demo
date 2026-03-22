@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres:18.1
+    environment:
+      POSTGRES_DB: locking-strategies-demo-db
+      POSTGRES_USER: locking-strategies-demo-user
+      POSTGRES_PASSWORD: locking-strategies-demo-password
+    ports:
+      - "5432:5432"
+    volumes:
+      - locking-strategies-demo-pgdata:/var/lib/postgresql
+
+volumes:
+  locking-strategies-demo-pgdata:
